@@ -1,8 +1,9 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback, useEffect, useMemo } from "react";
 import { useImmer } from "use-immer";
 
 export default function AppMentorsButton() {
   const [person, updatePerson] = useImmer(initialPerson);
+
 
   const handleUpdate = useCallback(() => {
     console.log('update fun')
@@ -14,7 +15,7 @@ export default function AppMentorsButton() {
       if(!mentor) return;
       mentor.name = current;
     });
-  }, []);
+  },[updatePerson]);
 
   const handleAdd = useCallback(()=>{
     let name = prompt(`추가할 멘토의 이름은 무엇인가?`);
@@ -22,7 +23,7 @@ export default function AppMentorsButton() {
     updatePerson((person) => {
       person.mentors.push({ name, title });
     });
-  },[]);
+  },[updatePerson]);
 
   const handleDelete = useCallback(() => {
     let name = prompt(`삭제할 멘토의 이름은 무엇인가?`);
@@ -31,7 +32,7 @@ export default function AppMentorsButton() {
       const index = person.mentors.findIndex((m) => m.name === name);
       person.mentors.splice(index, 1);
     });
-  },[])
+  },[updatePerson])
 
   return (
     <div>
